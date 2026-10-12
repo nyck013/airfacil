@@ -12,6 +12,6 @@ window.AIRFACIL_CONFIG = Object.freeze({
   },
   checkoutUrl: 'https://pay.wiapy.com/btOw9ye-Bre9', // Ex.: https://pay.cakto.com.br/SEU-CHECKOUT
   whatsappNumber: '5513997914733', // Código do país + DDD + número, somente dígitos.
-  supportEmail: 'contato@airfacil.com.br',
+  supportEmail: 'contatoairfacil@gmail.com',
   whatsappMessage: 'Olá! Quero saber mais sobre o Cardápio Air Fryer.'
 });
