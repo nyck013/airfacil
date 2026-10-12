@@ -10,7 +10,7 @@ window.AIRFACIL_CONFIG = Object.freeze({
     bonus: { src: 'assets/bonus.png', alt: 'Os três bônus do Cardápio Air Fryer' },
     oferta: { src: 'assets/oferta.png', alt: 'Materiais incluídos na oferta do Cardápio Air Fryer' }
   },
-  checkoutUrl: 'https://pay.cakto.com.br/ecmny3j_1180328', // Ex.: https://pay.cakto.com.br/SEU-CHECKOUT
+  checkoutUrl: 'https://pay.wiapy.com/btOw9ye-Bre9', // Ex.: https://pay.cakto.com.br/SEU-CHECKOUT
   whatsappNumber: '5513997914733', // Código do país + DDD + número, somente dígitos.
   supportEmail: 'contato@airfacil.com.br',
   whatsappMessage: 'Olá! Quero saber mais sobre o Cardápio Air Fryer.'
