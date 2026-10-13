@@ -68,29 +68,52 @@
     });
   }
 
-  // Só substitui o recorte antigo depois que a nova imagem carregar.
-  // Assim, um arquivo ausente não deixa a seção com uma imagem quebrada.
+  // Imagens de seções distantes só são requisitadas quando o visitante se aproxima.
+  // O recorte original permanece no HTML como fallback se o arquivo customizado faltar.
+  const deferredImages = [];
   document.querySelectorAll('[data-image]').forEach(container => {
     const setting = config.images?.[container.dataset.image];
     if (!setting?.src) return;
-    const replacement = new Image();
-    replacement.alt = '';
-    replacement.setAttribute('aria-hidden', 'true');
-    replacement.decoding = 'async';
-    replacement.onload = () => {
-      if (!replacement.naturalWidth) return;
-      container.replaceChildren(replacement);
-      container.classList.add('custom-image');
+    const current = container.querySelector('img');
+    if (current && new URL(current.getAttribute('src'), document.baseURI).href === new URL(setting.src, document.baseURI).href) {
       if (setting.alt) container.setAttribute('aria-label', setting.alt);
-      if (container.parentElement.classList.contains('hero-art')) {
-        container.parentElement.classList.add('custom-image-wrapper');
-      }
+      return; // Evita baixar a imagem principal uma segunda vez.
+    }
+    const loadReplacement = () => {
+      const replacement = new Image();
+      replacement.alt = '';
+      replacement.setAttribute('aria-hidden', 'true');
+      replacement.decoding = 'async';
+      replacement.loading = 'lazy';
+      replacement.onload = () => {
+        if (!replacement.naturalWidth) return;
+        container.replaceChildren(replacement);
+        container.classList.add('custom-image');
+        if (setting.alt) container.setAttribute('aria-label', setting.alt);
+        if (container.parentElement?.classList.contains('hero-art')) {
+          container.parentElement.classList.add('custom-image-wrapper');
+        }
+      };
+      replacement.onerror = () => { /* Mantém o recorte original. */ };
+      replacement.src = setting.src;
     };
-    replacement.onerror = () => {
-      // Mantém a referência até o arquivo indicado em config.js ser adicionado.
-    };
-    replacement.src = setting.src;
+    if (container.dataset.image === 'principal' || !('IntersectionObserver' in window)) {
+      loadReplacement();
+    } else {
+      deferredImages.push({ container, loadReplacement });
+    }
   });
+  if (deferredImages.length) {
+    const imageObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const item = deferredImages.find(candidate => candidate.container === entry.target);
+        if (item) item.loadReplacement();
+        imageObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '350px 0px', threshold: 0 });
+    deferredImages.forEach(item => imageObserver.observe(item.container));
+  }
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Depoimentos: rolagem nativa com toque, teclado, setas e indicadores.
