@@ -76,6 +76,10 @@
     if (!setting?.src) return;
     const current = container.querySelector('img');
     if (current && new URL(current.getAttribute('src'), document.baseURI).href === new URL(setting.src, document.baseURI).href) {
+      container.classList.add('custom-image');
+      if (container.parentElement?.classList.contains('hero-art')) {
+        container.parentElement.classList.add('custom-image-wrapper');
+      }
       if (setting.alt) container.setAttribute('aria-label', setting.alt);
       return; // Evita baixar a imagem principal uma segunda vez.
     }
