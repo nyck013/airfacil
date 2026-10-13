@@ -380,3 +380,20 @@ html.has-countdown-bar {scroll-padding-top:calc(var(--countdown-bar-height) + 16
 .offer-countdown .countdown-colon {font-size:28px;color:var(--orange)}
 .offer-countdown .countdown-label i {color:var(--orange)}
 @media(max-width:680px) {.offer-countdown{margin:0 auto 24px}}
+
+/* Performance mobile: reduzir composição e repinturas sem alterar o conteúdo. */
+@media (max-width: 680px) {
+  /* O filtro SVG de ruído sobre toda a página força trabalho de pintura. */
+  body::before { display: none !important; }
+  /* Isola as seções longas; o navegador adia layout e pintura fora da tela. */
+  main > .section:not(.hero) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 750px;
+  }
+  /* A rolagem mantém conteúdo legível enquanto o navegador compõe a tela. */
+  .reveal { will-change: auto !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal, .btn, .btn i { transition: none !important; animation: none !important; }
+}
