@@ -88,7 +88,8 @@
       replacement.alt = '';
       replacement.setAttribute('aria-hidden', 'true');
       replacement.decoding = 'async';
-      replacement.loading = 'lazy';
+      // A requisição já é adiada pelo IntersectionObserver; uma imagem fora do DOM
+      // com loading=lazy pode não carregar e impedir o onload.
       replacement.onload = () => {
         if (!replacement.naturalWidth) return;
         container.replaceChildren(replacement);
