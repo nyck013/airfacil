@@ -16,3 +16,7 @@
 /* Títulos de seção sem marcadores numéricos. */
 .section-heading{display:block}
 .benefits .copy p,.benefits .copy .btn{margin-left:0}
+
+/* Indicação ao navegador para evitar imagens ultrapassarem os contêineres em telas estreitas. */
+img { max-width: 100%; }
+.crop img { max-width: none; }
