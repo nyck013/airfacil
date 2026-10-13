@@ -4,7 +4,7 @@ window.AIRFACIL_CONFIG = Object.freeze({
   // Use a extensão real do arquivo (.png, .jpg, .webp etc.).
   // Se o arquivo não existir, a imagem atual será mantida.
   images: {
-    principal: { src: 'assets/topo.png', alt: 'Air Fryer e aplicativo AirFácil' },
+    principal: { src: 'assets/topo.jpg', alt: 'Air Fryer e aplicativo AirFácil' },
     refeicao: { src: 'assets/mulher-comendo.png', alt: 'Mulher saboreando uma refeição' },
     beneficios: { src: 'assets/beneficios.png', alt: 'Aplicativo e benefícios do Cardápio Air Fryer' },
     bonus: { src: 'assets/bonus.png', alt: 'Os três bônus do Cardápio Air Fryer' },
