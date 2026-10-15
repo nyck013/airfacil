@@ -298,10 +298,17 @@
     catch { return null; }
   }
   const checkoutUrl = safeCheckout(config.checkoutUrl);
-  document.querySelectorAll('[data-checkout]').forEach(button => button.addEventListener('click', () => {
-    if (checkoutUrl) window.location.assign(checkoutUrl);
-    else notice('As compras ainda não estão disponíveis', 'Esta é uma prévia da página AirFácil. O link de pagamento será disponibilizado em breve. Nenhuma cobrança foi realizada.');
-  }));
+  document.querySelectorAll('[data-checkout]').forEach(button => {
+    // Links reais abrem o checkout sem rolagem e preservam os parâmetros do rastreamento.
+    if (button.tagName === 'A' && checkoutUrl) {
+      button.href = checkoutUrl;
+      return;
+    }
+    button.addEventListener('click', () => {
+      if (checkoutUrl) window.location.assign(checkoutUrl);
+      else notice('As compras ainda não estão disponíveis', 'Esta é uma prévia da página AirFácil. O link de pagamento será disponibilizado em breve. Nenhuma cobrança foi realizada.');
+    });
+  });
   const emailButton = document.querySelector('[data-email]');
   const whatsappButton = document.querySelector('[data-whatsapp]');
   const email = String(config.supportEmail || '').trim();
